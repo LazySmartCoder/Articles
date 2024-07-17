@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{cattext}} | Articles{% endblock %}
+{% block keywords %}{{keywords}}{% endblock %}
+
+    {% block body %}
+    <!-- Page Content -->
+    <!-- Banner Starts Here -->
+    <div class="heading-page header-text">
+      <section class="page-heading">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="text-content">
+                <h4>Category</h4>
+                <h2>{{cattext}}</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    
+    <!-- Banner Ends Here -->
+
+    <!-- <section class="call-to-action">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="main-content">
+              <div class="row">
+                <div class="col-lg-8">
+                  <span>Stand Blog HTML5 Template</span>
+                  <h4>Creative HTML Template For Bloggers!</h4>
+                </div>
+                <div class="col-lg-4">
+                  <div class="main-button">
+                    <a href="https://templatemo.com/tm-551-stand-blog" target="_parent">Download Now!</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section> -->
+    <section class="blog-posts grid-system">
+      <div class="container">
+        <form class="d-flex" method="get" action="/search">
+          <input class="form-control me-2" type="search" name="search" placeholder="Search..." aria-label="Search">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+        <br>
+        <div class="row">
+          <div class="col-lg-8">
+            <div class="all-blog-posts">
+              <div class="row">
+                {% for cat in carresult|slice:"::-1" %}
+                <!-- Blog desc starts here -->
+                <div class="col-lg-6">
+                  <div class="blog-post">
+                    <div class="blog-thumb">
+                      <img style="height: 400px;" src="{{cat.BlogImage}}" alt="">
+                    </div>
+                    <div class="down-content">
+                      <span>{{cat.BlogCategory}}</span>
+                      <a href="/read-blog/{{cat.BlogSlug}}"><h4>{{cat.BlogName}}</h4></a>
+                      <ul class="post-info">
+                        <li><a >{{cat.BlogAuthor}}</a></li>
+                        <li><a >{{cat.BlogDateAdded}}</a></li>
+                        <li><a >{{cat.Views}} <i class="fa fa-eye"></i></a></li>
+                      </ul>
+                      <p>{{cat.BlogDescription}}</p>
+                      <div class="post-options">
+                        <div class="row">
+                          <div class="col-lg-12">
+                            <ul class="post-tags">
+                              <li><i class="fa fa-tags"></i></li>
+                              <li><a>{{cat.BlogCategory}}</a></li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Blog desc ends here -->
+                {% endfor %}
+
+
+                <div class="col-lg-12">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="sidebar">
+              <div class="row">
+          <div class="col-lg-12">
+            <div class="sidebar-item recent-posts">
+              <div class="sidebar-heading">
+                <h2>Recent Posts</h2>
+              </div>
+              <div class="content">
+                <ul>
+                  {% for recentblog in blogs %}
+                  <li><a href="/read-blog/{{recentblog.BlogSlug}}">
+                    <h5>{{recentblog.BlogName}}</h5>
+                    <span>{{recentblog.BlogDateAdded}}</span>
+                  </a></li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-12">
+            <div class="sidebar-item categories">
+              <div class="sidebar-heading">
+                <h2>Categories</h2>
+              </div>
+              <div class="content">
+                <ul>
+                  <li><a href="/cat/Top Trends">- Top Trends</a></li>
+                  <li><a href="/cat/Failure Chronicles">- Failure Chronicles</a></li>
+                  <li><a href="/cat/Entertainment">- Entertainment</a></li>
+                  <li><a href="/cat/Shark Tank India">- Shark Tank India</a></li>
+                  <li><a href="/cat/Technology">- Technology</a></li>
+                  <li><a href="/cat/Good Reads">- Good Reads</a></li>
+                  <li><a href="/cat/Python">- Python</a></li>
+                  <li><a href="/cat/Business News">- Business News</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="col-lg-12">
+            <div class="sidebar-item tags">
+              <div class="sidebar-heading">
+                <h2>Tag Clouds</h2>
+              </div>
+              <div class="content">
+                <ul>
+                  <li><a href="#">Lifestyle</a></li>
+                  <li><a href="#">Creative</a></li>
+                  <li><a href="#">HTML5</a></li>
+                  <li><a href="#">Inspiration</a></li>
+                  <li><a href="#">Motivation</a></li>
+                  <li><a href="#">PSD</a></li>
+                  <li><a href="#">Responsive</a></li>
+                </ul>
+              </div>
+            </div>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    </section>
+    {% endblock %}

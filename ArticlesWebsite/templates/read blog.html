@@ -1,0 +1,277 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block keywords %}{{keywords}}{% endblock %}
+<meta name="description" content="{{desc}}">
+{% block title %}{{name}} | Articles{% endblock %}
+{% block desc %}{{desc}}{% endblock %}
+
+    {% block body %}
+      <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Satisfy" rel="stylesheet">
+    <!-- Page Content -->
+    <!-- Banner Starts Here -->
+    <div class="heading-page header-text">
+      <section class="page-heading">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="text-content">
+                <h4>{{cat}}</h4>
+                <h1 style="color: white;">{{name}}</h1>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <section class="blog-posts grid-system">
+      <div class="container">
+        <form class="d-flex" method="get" action="/search">
+          <input class="form-control me-2" type="search" name="search" placeholder="Search..." aria-label="Search">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+        <br>
+        <div class="row">
+          <div class="col-lg-8">
+            <div class="all-blog-posts">
+              <div class="row">
+                <div class="col-lg-12">
+                  <h5>Author: {{author}} | Date: {{date}} | <i class="fa fa-eye"></i>: {{views}}</h5>
+                  <br>
+                  <img style="width: 100%; height: 400px;" src="{{image}}" alt="">
+                  <br><br>
+                  {{post|safe}}
+                </div>
+
+                <div class="col-lg-12">
+                  {% if request.user.is_authenticated %}
+                  {% if request.user.email == "None" %}
+                  <br>
+                  <a href="/like-blog/{{blogid}}"><button class="btn btn-outline-success"><i class="fa fa-thumbs-up"></i> Like ({{likes}})</button></a>
+                  {% else %}
+                  <br>
+                  <a><button disabled class="btn btn-outline-success"><i class="fa fa-thumbs-up"></i> Like ({{likes}})</button></a>
+                  {% endif %}
+                  {% endif %}
+                  <div class="sidebar-item comments">
+                    <div class="sidebar-heading">
+                      <h2>{{comments_count}} Comments</h2>
+                    </div>
+                    <div class="content">
+                              {% for comment in comments|slice:"::-1" %}
+                              <ul>
+                              <li>
+                                <div class="author-thumb">
+                                  <img class="circular-image" src="/Images/{{comment.User_ProfilePhoto}}" alt="">
+                                </div>
+                              <div class="right-content">
+                                <h4>{{comment.Name}}<span>{{comment.ActualDate}}</span></h4>
+                                <p>{{comment.Comment}}</p>
+                              </div>
+                              </li>
+                              </ul>
+                            <hr>
+                              {% endfor %}
+                        
+                      
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-12">
+                  <div class="sidebar-item submit-comment">
+                    {% if request.user.is_authenticated %}
+                    {% if request.user.email == "None" %}
+                    <div class="sidebar-heading">
+                      <h2>Your comment</h2>
+                    </div>
+                    <div class="content">
+                      <form id="comment" action="/post-comment" method="post">
+                        <div class="row">
+                          <div class="col-lg-12">
+                            <fieldset>
+                              <textarea name="comment" rows="6" id="message" placeholder="Comment..." required=""></textarea>
+                            </fieldset>
+                          </div>
+                          <input type="hidden" name="id" value="{{blogid}}">
+                          <div class="col-lg-12">
+                            <fieldset>
+                              <button type="submit" id="form-submit" class="main-button">Post Comment</button>
+                            </fieldset>
+                          </div>
+                        </div>
+                        {% csrf_token %}
+                      </form>
+                    </div>
+                    {% endif %}
+                    {% endif %}
+                    </div>
+                  </div>
+                </div>
+                </div>
+              </div>
+
+          <div class="col-lg-4">
+            <div class="sidebar">
+              <div class="row">
+                <div class="col-lg-12">
+                  
+                </div>
+                <div class="col-lg-12">
+                  <div class="sidebar-item recent-posts">
+                    <div class="sidebar-heading">
+                      <h2>Recent Posts</h2>
+                    </div>
+                    <div class="content">
+                      <ul>
+                        {% for recentblog in allblogs %}
+                        <li><a href="/read-blog/{{recentblog.BlogSlug}}">
+                          <h5>{{recentblog.BlogName}}</h5>
+                          <span>{{recentblog.BlogDateAdded}}</span>
+                        </a></li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <div class="sidebar-item categories">
+                    <div class="sidebar-heading">
+                      <h2>Categories</h2>
+                    </div>
+                    <div class="content">
+                      <ul>
+                        <li><a href="/cat/Top Trends">- Top Trends</a></li>
+                        <li><a href="/cat/Failure Chronicles">- Failure Chronicles</a></li>
+                        <li><a href="/cat/Entertainment">- Entertainment</a></li>
+                        <li><a href="/cat/Shark Tank India">- Shark Tank India</a></li>
+                        <li><a href="/cat/Technology">- Technology</a></li>
+                        <li><a href="/cat/Good Reads">- Good Reads</a></li>
+                        <li><a href="/cat/Python">- Python</a></li>
+                        <li><a href="/cat/Business News">- Business News</a></li>
+                      </ul>
+                      <!-- Your ads here -->
+                    </div>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalToggleLabel">Join my newsletters on WhatsApp!</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <center>
+              <!-- <img style="max-width: 400px;" src="{% static 'Images\Channel.png' %}" alt=""> -->
+              <img style="max-width: 100px;" src="{% static 'Images/Founder.png' %}" alt="">
+              <br>
+              <p style="text-align: center;">Stay ahead with Anirban Bhattacharya's exclusive WhatsApp newsletters on Tech, Entrepreneurship, Innovations, and Trends. Discover insights and learn from the failures of industry giants!</p>
+            </center>
+          </div>
+          <div class="modal-footer">
+            <a href="https://whatsapp.com/channel/0029VahuoYADuMRmcxBZcv0M"><button class="btn btn-outline-success">Follow Channel!</button></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-primary" id="bbutton" data-bs-target="#exampleModalToggle" data-bs-toggle="modal" style="display: none;">Open first modal</button>
+    <script>
+
+      setTimeout("document.getElementById('bbutton').click()", 6000);
+          </script>
+    <style>
+      .circular-image {
+  width: 150px; /* Adjust width and height as needed */
+  height: 100px;
+  border-radius: 100%; /* Creates a circular shape */
+  object-fit: cover; /* Maintain aspect ratio and cover image */
+  border: 2px solid #fff; /* Optional - Add border to the circle */
+}
+      body {
+  background: white
+}
+
+.card {
+  border: none;
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  cursor: pointer
+}
+
+.card:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background-color: #aff6e0;
+  transform: scaleY(1);
+  transition: all 0.5s;
+  transform-origin: bottom
+}
+
+.card:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background-color: #1ecd97;
+  transform: scaleY(0);
+  transition: all 0.5s;
+  transform-origin: bottom
+}
+
+.card:hover::after {
+  transform: scaleY(1)
+}
+
+.fonts {
+  font-size: 11px
+}
+
+.social-list {
+  display: flex;
+  list-style: none;
+  justify-content: center;
+  padding: 0
+}
+
+.social-list li {
+  padding: 10px;
+  color: #8E24AA;
+  font-size: 19px
+}
+
+.buttons button:nth-child(1) {
+  border: 1px solid #8E24AA !important;
+  color: #8E24AA;
+  height: 40px
+}
+
+.buttons button:nth-child(1):hover {
+  border: 1px solid #8E24AA !important;
+  color: #fff;
+  height: 40px;
+  background-color: #8E24AA
+}
+
+.buttons button:nth-child(2) {
+  border: 1px solid #8E24AA !important;
+  background-color: #8E24AA;
+  color: #fff;
+  height: 40px
+}
+  </style>
+    {% endblock %}

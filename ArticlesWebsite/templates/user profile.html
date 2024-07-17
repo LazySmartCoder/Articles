@@ -1,0 +1,297 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}My Profile | Articles{% endblock %}
+
+    {% block body %}
+<section class="about-us">
+    <br><br>
+    <div class="container mt-5">
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-7">
+                <div class="card p-3 py-4">
+                    <div class="text-center"> <img class="circular-image" style="max-width: 200px;" src="/Images/{{image.Photo}}" width="100"> </div>
+                    <br>
+                        <h5 class="mt-2 mb-0">{{request.user.first_name}}</h5> <span>{{request.user.username}}</span> <span>{{request.user.last_name}}</span>
+                            <br>
+                            <br><br>
+                        <div class="button">
+                                <button data-bs-toggle="modal" data-bs-target="#editprofile" type="button" class="btn btn-outline-success">Edit Profile</button><button data-bs-toggle="modal" data-bs-target="#changepassword" type="button" class="btn btn-outline-info">Change Password</button><button data-bs-toggle="modal" data-bs-target="#deleteaccount" type="button" class="btn btn-outline-danger">Delete Account</button>
+                        </div>
+                </div>
+            </div>
+        </div>
+        </div>
+  
+  <!-- Edit Profile -->
+  <div class="modal fade" id="editprofile" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <br><br>
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Edit Profile</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="/edit-userprofile" method="post" enctype="multipart/form-data">
+            <div class="input-group mb-3">
+              <label class="input-group-text" for="inputGroupFile01">Profile Photo</label>
+              <input type="file" accept="image/*" name="photo" class="form-control" id="inputGroupFile01">
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" name="name" required id="floatingInput" placeholder="Name" value="{{request.user.first_name}}">
+                <label for="floatingInput">Name</label>
+              </div>
+            <div class="form-floating mb-3">
+                <input type="email" class="form-control" name="email" readonly required id="floatingInput" placeholder="Email" value="{{request.user.username}}">
+                <label for="floatingInput">Email address</label>
+              </div>
+              <div class="form-floating mb-3">
+                <input type="number" class="form-control" name="phone" id="floatingInput" placeholder="Phone" value="{{request.user.last_name}}">
+                <label for="floatingInput">Phone</label>
+              </div>
+              <div class="form-floating">
+                <input type="password" class="form-control" id="floatingPassword" required name="password" placeholder="Password">
+                <label for="floatingPassword">Password</label>
+              </div>
+              <br>
+              <button type="submit" class="btn btn-success">Update Profile</button>
+              {% csrf_token %}
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Change Password -->
+  <div class="modal fade" id="changepassword" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <br><br>
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Change Password</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form action="/change-password" method="post">
+                <div class="form-floating">
+                    <input type="password" class="form-control" id="floatingPassword" name="oldpass" placeholder="Old Password" required>
+                    <label for="floatingPassword">Old Password</label>
+                  </div>
+                  <br>
+                  <div class="form-floating">
+                    <input type="password" class="form-control" id="floatingPassword" name="newpass" placeholder="New Password" required>
+                    <label for="floatingPassword">New Password</label>
+                  </div>
+                  <br>
+                  <div class="form-floating">
+                    <input type="password" class="form-control" id="floatingPassword" name="confpass" placeholder="Confirm New Password" required>
+                    <label for="floatingPassword">Confirm New Password</label>
+                  </div>
+                  <br>
+                  <button type="submit" class="btn btn-info">Change Password</button>
+                  {% csrf_token %}
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- Delete Account -->
+    <div class="modal fade" id="deleteaccount" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <br><br>
+      <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Delete Account</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/delete-account" method="post">
+                    <div class="form-floating">
+                        <input type="password" class="form-control" id="floatingPassword" name="password" placeholder="Password" required>
+                        <label for="floatingPassword">Password</label>
+                      </div>
+                      <br>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" required>
+                        <label class="form-check-label" for="flexCheckDefault">
+                          I agree that I want to delete my <strong>Articles</strong> account.
+                        </label>
+                      </div>
+                      <br>
+                      <button type="submit" class="btn btn-danger">Delete Account</button>
+                      {% csrf_token %}
+                </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <style>
+        .circular-image {
+    width: 150px; /* Adjust width and height as needed */
+    height: 200px;
+    border-radius: 100%; /* Creates a circular shape */
+    object-fit: cover; /* Maintain aspect ratio and cover image */
+    border: 2px solid #fff; /* Optional - Add border to the circle */
+}
+        body {
+    background: #eee
+}
+
+.card {
+    border: none;
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    cursor: pointer
+}
+
+.card:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background-color: #aff6e0;
+    transform: scaleY(1);
+    transition: all 0.5s;
+    transform-origin: bottom
+}
+
+.card:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background-color: #1ecd97;
+    transform: scaleY(0);
+    transition: all 0.5s;
+    transform-origin: bottom
+}
+
+.card:hover::after {
+    transform: scaleY(1)
+}
+
+.fonts {
+    font-size: 11px
+}
+
+.social-list {
+    display: flex;
+    list-style: none;
+    justify-content: center;
+    padding: 0
+}
+
+.social-list li {
+    padding: 10px;
+    color: #8E24AA;
+    font-size: 19px
+}
+
+.buttons button:nth-child(1) {
+    border: 1px solid #8E24AA !important;
+    color: #8E24AA;
+    height: 40px
+}
+
+.buttons button:nth-child(1):hover {
+    border: 1px solid #8E24AA !important;
+    color: #fff;
+    height: 40px;
+    background-color: #8E24AA
+}
+
+.buttons button:nth-child(2) {
+    border: 1px solid #8E24AA !important;
+    background-color: #8E24AA;
+    color: #fff;
+    height: 40px
+}
+    </style>
+    <style>
+        body {
+    background: #eee
+}
+
+.card {
+    border: none;
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    cursor: pointer
+}
+
+.card:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background-color: #82b4e2;
+    transform: scaleY(1);
+    transition: all 0.5s;
+    transform-origin: bottom
+}
+
+.card:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background-color: #0563BB;
+    transform: scaleY(0);
+    transition: all 0.5s;
+    transform-origin: bottom
+}
+
+.card:hover::after {
+    transform: scaleY(1)
+}
+
+.fonts {
+    font-size: 11px
+}
+
+.social-list {
+    display: flex;
+    list-style: none;
+    justify-content: center;
+    padding: 0
+}
+
+.social-list li {
+    padding: 10px;
+    color: #8E24AA;
+    font-size: 19px
+}
+
+.buttons button:nth-child(1) {
+    border: 1px solid #8E24AA !important;
+    color: #8E24AA;
+    height: 40px
+}
+
+.buttons button:nth-child(1):hover {
+    border: 1px solid #8E24AA !important;
+    color: #fff;
+    height: 40px;
+    background-color: #8E24AA
+}
+
+.buttons button:nth-child(2) {
+    border: 1px solid #8E24AA !important;
+    background-color: #8E24AA;
+    color: #fff;
+    height: 40px
+}
+    </style>
+</section>
+    {% endblock %}
