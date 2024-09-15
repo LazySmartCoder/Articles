@@ -9,11 +9,10 @@
         <div class="row d-flex justify-content-center">
             <div class="col-md-7">
                 <div class="card p-3 py-4">
-                    <div class="text-center"> <img class="circular-image" style="max-width: 200px;" src="/Images/{{image.Photo}}" width="100"> </div>
+                    <div class="text-center"> <img class="circular-image" style="max-width: 200px;" src="{% static 'Images/User profile.png' %}" width="100"> </div>
                     <br>
                         <h5 class="mt-2 mb-0">{{request.user.first_name}}</h5> <span>{{request.user.username}}</span> <span>{{request.user.last_name}}</span>
                             <br>
-                            <br><br>
                         <div class="button">
                                 <button data-bs-toggle="modal" data-bs-target="#editprofile" type="button" class="btn btn-outline-success">Edit Profile</button><button data-bs-toggle="modal" data-bs-target="#changepassword" type="button" class="btn btn-outline-info">Change Password</button><button data-bs-toggle="modal" data-bs-target="#deleteaccount" type="button" class="btn btn-outline-danger">Delete Account</button>
                         </div>
@@ -33,10 +32,6 @@
         </div>
         <div class="modal-body">
           <form action="/edit-userprofile" method="post" enctype="multipart/form-data">
-            <div class="input-group mb-3">
-              <label class="input-group-text" for="inputGroupFile01">Profile Photo</label>
-              <input type="file" accept="image/*" name="photo" class="form-control" id="inputGroupFile01">
-            </div>
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" name="name" required id="floatingInput" placeholder="Name" value="{{request.user.first_name}}">
                 <label for="floatingInput">Name</label>

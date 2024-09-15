@@ -20,7 +20,7 @@ user_otp = otpGen()
 
 def sendEmail(receiver_name, receiver_email, subject, message):
     msg = MIMEMultipart()
-    msg['From'] = formataddr((str(Header('Anirban Bhattacharya')), "no-reply@anirbanbhattacharya.in"))
+    msg['From'] = formataddr((str(Header('Anirban Bhattacharya')), "contact@anirbanbhattacharya.in"))
     msg['To'] = receiver_email
     msg["Subject"] = subject
     html = message
@@ -28,7 +28,7 @@ def sendEmail(receiver_name, receiver_email, subject, message):
     s = smtplib.SMTP('smtp.gmail.com', port=587)
     s.starttls()
     s.login("contact.anirbanbhattacharya@gmail.com", "kuqgluftjyomehnx")
-    s.sendmail("no-reply@anirbanbhattacharya.in", receiver_email, msg.as_string())
+    s.sendmail("contact@anirbanbhattacharya.in", receiver_email, msg.as_string())
     s.quit()
     return None
 
